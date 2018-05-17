@@ -191,33 +191,38 @@ if(isset($_POST['load_dbinfos']) && isset($_POST['target'])) //afficher infos DB
 	$stmt = $connexion->getdbinfos($dbname);
 	$name = "";
 
-	$row = $stmt->fetch(PDO::FETCH_ASSOC);  // <TH>
-	foreach ($row as $key => $value) {
-		$rep.="<th>".$key."</th>";
-	}
-	$rep.="<th> Actions</th>";
-	$rep.="</tr>";
-	$stmt2 = $connexion->getdbinfos($dbname);
-	while($row = $stmt2->fetch(PDO::FETCH_ASSOC)) { // <TD>
-		$rep.="<tr>";
-		foreach ($row as $key => $value) {
-			if($key == "Nom"){
-				$name = $value;
-				$rep.="<td><a href='edit.tables.php?table=$value&db=$dbname'>".$value."</a></td>";
-			}
-			else{
-				$rep.="<td>".$value."</td>";
-			}
-		}
-		$rep .= "<td>".
-					"<a href='edit.tables.php?db=$dbname&table=".$name."'>".
-						"<span class='icon-edit oi oi-pencil' id=''</span>".
-					"</a>".
-					"<span class='icon-delete oi oi-x'  name='$name' id=''></span>".
-				"</td>";
-		$rep.="</tr>";
-	}
-	$rep.="</table>";
+	if($row = $stmt->fetch(PDO::FETCH_ASSOC)) { // <TH>
+        foreach ($row as $key => $value) {
+            $rep.="<th>".$key."</th>";
+        }
+        $rep.="<th> Actions</th>";
+        $rep.="</tr>";
+        $stmt2 = $connexion->getdbinfos($dbname);
+        while($row = $stmt2->fetch(PDO::FETCH_ASSOC)) { // <TD>
+            $rep.="<tr>";
+            foreach ($row as $key => $value) {
+                if($key == "Nom"){
+                    $name = $value;
+                    $rep.="<td><a href='edit.tables.php?table=$value&db=$dbname'>".$value."</a></td>";
+                }
+                else{
+                    $rep.="<td>".$value."</td>";
+                }
+            }
+            $rep .= "<td>".
+                        "<a href='edit.tables.php?db=$dbname&table=".$name."'>".
+                            "<span class='icon-edit oi oi-pencil' id=''</span>".
+                        "</a>".
+                        "<span class='icon-delete oi oi-x'  name='$name' id=''></span>".
+                    "</td>";
+            $rep.="</tr>";
+        }
+    }
+    else{
+        $rep .= "<td>NO DATA</td></tr>";
+    }
+
+    $rep.= "</table>";
 	echo $rep;
 }
 
