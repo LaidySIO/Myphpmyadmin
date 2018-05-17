@@ -9,22 +9,28 @@ if(isset($_POST['load_database'])) //afficher toutes les bases
 	$list_db= "<table class='bdlist table'>";
 	$connexion = new DB();
 	$stmt = $connexion->getdb();
-	while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-		foreach ($row as $key => $value) {
-			$list_db .= "<tr>".
-							"<td>".
-								"<a href='edit.databases.php?db=$value'>$value</a>".
-							"</td>".
-							"<td>".
-								"<a href='edit.databases.php?db=$value'>".
-									"<span class='icon-edit oi oi-pencil' id='".$value."'</span>".
-								"</a>".
-								"<span class='icon-delete oi oi-x' id='".$value."'></span>".
-							"</td>".
-						"</tr>";
-		}
-	}
-	$list_db .= "</table>";
+    if($stmt->rowCount() > 0)
+    {
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            foreach ($row as $key => $value) {
+                $list_db .= "<tr>".
+                    "<td>".
+                    "<a href='edit.databases.php?db=$value'>$value</a>".
+                    "</td>".
+                    "<td>".
+                    "<a href='edit.databases.php?db=$value'>".
+                    "<span class='icon-edit oi oi-pencil' id='".$value."'</span>".
+                    "</a>".
+                    "<span class='icon-delete oi oi-x' id='".$value."'></span>".
+                    "</td>".
+                    "</tr>";
+            }
+        }
+    }
+    else{
+        $list_db .= "<tr><td>NO DATA</td></tr>";
+    }
+    $list_db .= "</table>";
 	echo $list_db;
 }
 
@@ -34,25 +40,29 @@ if(isset($_POST['load_tables'])) //afficher toutes les tables
 	$list_table= "<table class='tablelist table'>";
 	$connexion = new DB();
 	$stmt = $connexion->getdb();
-	
-	while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-		foreach ($row as $key => $value) {
-			$list_table .= "<tr class='table-primary'>".
-								"<td>$value</td>".
-							"</tr>";
-			$stmt_t = $connexion->getdbtables($value);
-			while($row_t = $stmt_t->fetch(PDO::FETCH_ASSOC)) {
-				foreach ($row_t as $key_t => $value_t) {
-					$list_table .= "<tr class='hide'>".
-										"<td>".
-											"<a href='edit.tables.php?db=$value&table=$value_t'>".
-											"$value_t</a>".
-										"</td>".
-									"</tr>";
-				}
-			}
-		}
-	}
+    if($stmt->rowCount() > 0) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            foreach ($row as $key => $value) {
+                $list_table .= "<tr class='table-primary'>" .
+                    "<td>$value</td>" .
+                    "</tr>";
+                $stmt_t = $connexion->getdbtables($value);
+                while ($row_t = $stmt_t->fetch(PDO::FETCH_ASSOC)) {
+                    foreach ($row_t as $key_t => $value_t) {
+                        $list_table .= "<tr class='hide'>" .
+                            "<td>" .
+                            "<a href='edit.tables.php?db=$value&table=$value_t'>" .
+                            "$value_t</a>" .
+                            "</td>" .
+                            "</tr>";
+                    }
+                }
+            }
+        }
+    }
+    else{
+        $list_table .= "<tr><td>NO DATA</td></tr>";
+    }
 	$list_table .= "</table>";
 	echo $list_table;
 }
