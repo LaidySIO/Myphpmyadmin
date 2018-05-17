@@ -1,0 +1,63 @@
+
+/*All pages*/
+body, html{
+	margin: 10px;
+}
+
+a:hover{
+	cursor: default;
+}
+
+.hide{
+	display: none;
+}
+
+/*Pahe index.php*/
+.main {
+	display: flex;
+	flex-direction: column;
+}
+
+/*Page databases.php*/
+.icon-edit, .icon-delete{
+	margin : 0 5px;
+}
+
+.icon-edit{
+	color: blue;
+}
+
+.icon-delete{
+	color: red;
+}
+
+.bdindos, .bdlist{
+	margin: 10% 0;
+}
+
+/*Page edit.database.php*/
+
+.createtable{
+	margin-top: 30px; 
+}
+
+.column_arg{
+	margin: 30px 0;
+}
+
+/*PAge tables.php*/
+
+.tablelist{
+	width : 80%;
+	margin: auto;
+}
+
+tr.table-primary>td{
+	text-align :center ;
+	
+}
+
+form.createtable .row{
+	display: inline;
+}
+
